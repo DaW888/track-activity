@@ -124,9 +124,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.item_list, null);
 
-        TextView tvItemList = convertView.findViewById(R.id.tvNumOfExercise);
+        TextView tvItemList = convertView.findViewById(R.id.tvNumRepeat);
         tvItemList.setText(childText);
 
+        TextView tvNumOfExercise = convertView.findViewById(R.id.tvNumOfExercise);
+        tvNumOfExercise.setText(String.valueOf(childPosition + 1));
 
         return convertView;
     }
