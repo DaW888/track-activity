@@ -55,17 +55,17 @@ public class GetDataExpandableList {
 
 
         ja.put(oneDate);
+        oneDate.remove("date");
+        oneDate.put("date", "26-01-2000");
         ja.put(oneDate);
+        oneDate.remove("date");
+        oneDate.put("date", "27-01-2000");
         ja.put(oneDate);
+        oneDate.remove("date");
+        oneDate.put("date", "28-01-2000");
         ja.put(oneDate);
 
         Log.d("xxx", String.valueOf(ja));
-
-//        PrintWriter printWriter = new PrintWriter("workoutData.json");
-//        printWriter.write(ja.toString(4));
-//        printWriter.flush();
-//        printWriter.close();
-
 
 
         String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
@@ -82,57 +82,15 @@ public class GetDataExpandableList {
         }
 
 
-//        try{
-//            Writer output;
-//
-//            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-//            Log.d("xxx", dir.getPath());
-//            File file = new File(dir.getPath() + "/workout.json");
-//            output = new BufferedWriter(new FileWriter(file));
-//            output.write(ja.toString(4));
-//            output.close();
-
-
-
-
-
-
-
-
-
-
-
-
-
-//            File dir = new File(context.getFilesDir(),"files");
-//            if(!dir.exists()){
-//                dir.mkdir();
-//            }
-//            Log.d("xxx", dir.getPath());
-//
-//            File file = new File(dir.getPath() + "/workout.json");
-//            output = new BufferedWriter(new FileWriter(file));
-//            output.write(ja.toString(4));
-//            output.close();
-
-
-//        } catch (Exception e){
-//            Log.d("xxx", String.valueOf(e));
-//        }
-//
-//
         String getFile = readFromFile();
         JSONArray jar = new JSONArray(getFile);
         Log.d("xxx", "Z PLIKU "+String.valueOf(jar));
-//
-//
-//
-//
+
         return ja;
 
     }
 
-    private static String readFromFile() {
+    public static String readFromFile() {
 
         String jsonStr = null;
 
@@ -148,44 +106,7 @@ public class GetDataExpandableList {
             e.printStackTrace();
         }
 
+
         return jsonStr;
-
-
-//        String ret = "";
-//        InputStream inputStream = null;
-//
-//        try {
-//            inputStream = context.openFileInput(dir.getPath() + "/workout.json");
-//
-//            if ( inputStream != null ) {
-//                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-//                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-//                String receiveString;
-//                StringBuilder stringBuilder = new StringBuilder();
-//
-//                while ( (receiveString = bufferedReader.readLine()) != null ) {
-//                    stringBuilder.append(receiveString);
-//                }
-//
-//                ret = stringBuilder.toString();
-//            }
-//        }
-//        catch (FileNotFoundException e) {
-//            Log.e("xxx", "File not found: " + e.toString());
-//        } catch (IOException e) {
-//            Log.e("xxx", "Can not read file: " + e.toString());
-//        }
-//        finally {
-//            try {
-//                assert inputStream != null;
-//                inputStream.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        return ret;
-//
-
     }
 }
