@@ -44,7 +44,7 @@ public class GetDataExpandableList {
         powt.put("10");
         powt.put("20");
         powt.put("30");
-        sztanga.put("powt", powt);
+        sztanga.put("repeat", powt);
 
         JSONArray weight = new JSONArray();
         weight.put("10kg").put("20kg").put("30kg");
@@ -108,5 +108,45 @@ public class GetDataExpandableList {
 
 
         return jsonStr;
+    }
+
+    public static void SaveOneObjToFile(JSONObject jsonObject) {
+
+        JSONArray jar;
+        try {
+            // READ FILE
+            String jsonStrFromFile = readFromFile();
+            jar = new JSONArray(jsonStrFromFile);
+            Log.d("xxx", "Z PLIKU " + String.valueOf(jar));
+
+            for(int i=0; i < jar.length(); i++){
+                JSONObject oneOb = jar.getJSONObject(i);
+
+                if(oneOb.getString("date").equals(jsonObject.getString("date"))){
+                    jar.put(i, jsonObject);
+                }
+            }
+
+
+            // SAVE FILE
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File file = new File(dir.getPath(), "workoutData.json");
+            file.delete();
+            FileWriter writer;
+
+            try {
+                writer = new FileWriter(file);
+                writer.write(jar.toString(4));
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d("xxx", "getAllData: NIE UDALO SIE DODAC" + e);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

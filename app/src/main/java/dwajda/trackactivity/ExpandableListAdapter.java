@@ -2,16 +2,24 @@ package dwajda.trackactivity;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Key;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,8 +51,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             JSONArray exNameArray = jsonObject.getJSONArray("exList");
             String exName= exNameArray.getString(groupPosition);
             JSONObject numbAndWeig = jsonObject.getJSONObject(exName);
-            JSONArray numRepeat = numbAndWeig.getJSONArray("powt");
-            size = numRepeat.length();
+            JSONArray weight = numbAndWeig.getJSONArray("weight");
+            size = weight.length();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -76,7 +84,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             String exName= exNameArray.getString(groupPosition);
 
             JSONObject numbAndWeig = jsonObject.getJSONObject(exName);
-            JSONArray numRepeat = numbAndWeig.getJSONArray("powt");
+            JSONArray numRepeat = numbAndWeig.getJSONArray("weight");
 
             name = numRepeat.get(childPosition);
 
@@ -118,17 +126,98 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         String childText = (String) getChild(groupPosition, childPosition);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.item_list, null);
 
-        TextView tvItemList = convertView.findViewById(R.id.tvNumRepeat);
-        tvItemList.setText(childText);
+        final TextView tvWeight = convertView.findViewById(R.id.tvWeight);
+        tvWeight.setText(childText);
 
         TextView tvNumOfExercise = convertView.findViewById(R.id.tvNumOfExercise);
         tvNumOfExercise.setText(String.valueOf(childPosition + 1));
+
+        final EditText etWeight = convertView.findViewById(R.id.etWeight);
+        final ViewSwitcher switcher = convertView.findViewById(R.id.switcherWeight);
+
+        final View finalConvertView = convertView;
+        tvWeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                tvWeight.setText("ASDADS");
+                switcher.showNext();
+                etWeight.setText(tvWeight.getText());
+
+                etWeight.requestFocus();
+
+                etWeight.setOnKeyListener(new View.OnKeyListener() {
+                    @Override
+                    public boolean onKey(View v, int keyCode, KeyEvent event) {
+                        Log.d("xxx", "onKey: "+ keyCode);
+                        if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+                            Log.d("xxx", "onKey:etWeight " + etWeight.getText());
+                            tvWeight.setText(etWeight.getText());
+                            tvWeight.setText("ASDSDAD");
+                            switcher.showPrevious();
+
+
+                            try {
+                                JSONArray exNameArray = jsonObject.getJSONArray("exList");
+                                String exName= exNameArray.getString(groupPosition);
+
+                                JSONObject numbAndWeig = jsonObject.getJSONObject(exName);
+                                JSONArray numWeight = numbAndWeig.getJSONArray("weight");
+                                numWeight.put(childPosition, etWeight.getText());
+                                Log.d("xxx", String.valueOf(jsonObject));
+                                GetDataExpandableList.SaveOneObjToFile(jsonObject);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
+
+                            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(finalConvertView.getWindowToken(), 0);
+
+                            return true;
+                        }
+
+                        return false;
+                    }
+                });
+
+//                InputMethodManager imm = (InputMethodManager) finalConvertView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+            }
+        });
+
+
+//        final EditText etWeight = convertView.findViewById(R.id.etWeight);
+//        final ViewSwitcher switcher = convertView.findViewById(R.id.switcherWeight);
+//        etWeight.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                Log.d("xxx", "onKey: "+ keyCode);
+//                if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+//                    switcher.showPrevious();
+//                    tvWeight.setText(etWeight.getText());
+//
+//                    Toast.makeText(context, "elo", Toast.LENGTH_LONG).show();
+//
+//                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(finalConvertView.getWindowToken(), 0);
+//
+//                    return true;
+//                }
+//
+//                return false;
+//            }
+//        });
 
         return convertView;
     }
