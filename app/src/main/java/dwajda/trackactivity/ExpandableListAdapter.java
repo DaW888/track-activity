@@ -127,7 +127,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        String childText = (String) getChild(groupPosition, childPosition);
+        String childText = getChild(groupPosition, childPosition).toString();
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.item_list, null);
@@ -140,14 +140,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         final EditText etWeight = convertView.findViewById(R.id.etWeight);
         final ViewSwitcher switcher = convertView.findViewById(R.id.switcherWeight);
+        etWeight.setImeActionLabel("SET", KeyEvent.KEYCODE_ENTER);
 
         final View finalConvertView = convertView;
         tvWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                tvWeight.setText("ASDADS");
                 switcher.showNext();
                 etWeight.setText(tvWeight.getText());
+
+
+                final InputMethodManager imm = (InputMethodManager) finalConvertView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(etWeight, InputMethodManager.SHOW_IMPLICIT);
 
                 etWeight.requestFocus();
 
@@ -158,8 +162,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                         if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
                             Log.d("xxx", "onKey:etWeight " + etWeight.getText());
                             tvWeight.setText(etWeight.getText());
-                            tvWeight.setText("ASDSDAD");
-                            switcher.showPrevious();
 
 
                             try {
@@ -172,16 +174,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                                 Log.d("xxx", String.valueOf(jsonObject));
                                 GetDataExpandableList.SaveOneObjToFile(jsonObject);
 
+                                imm.hideSoftInputFromWindow(etWeight.getWindowToken(), 0);
+                                Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
+
+                                switcher.showPrevious();
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                Toast.makeText(context, "something went WRONG", Toast.LENGTH_SHORT).show();
                             }
 
-
-                            Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
-
-                            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(finalConvertView.getWindowToken(), 0);
 
                             return true;
                         }
@@ -190,34 +193,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     }
                 });
 
-//                InputMethodManager imm = (InputMethodManager) finalConvertView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
             }
         });
-
-
-//        final EditText etWeight = convertView.findViewById(R.id.etWeight);
-//        final ViewSwitcher switcher = convertView.findViewById(R.id.switcherWeight);
-//        etWeight.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                Log.d("xxx", "onKey: "+ keyCode);
-//                if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
-//                    switcher.showPrevious();
-//                    tvWeight.setText(etWeight.getText());
-//
-//                    Toast.makeText(context, "elo", Toast.LENGTH_LONG).show();
-//
-//                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(finalConvertView.getWindowToken(), 0);
-//
-//                    return true;
-//                }
-//
-//                return false;
-//            }
-//        });
 
         return convertView;
     }
