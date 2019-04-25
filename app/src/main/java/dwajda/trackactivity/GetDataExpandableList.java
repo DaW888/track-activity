@@ -149,4 +149,77 @@ public class GetDataExpandableList {
 
 
     }
+
+    public static JSONObject createDate(String date){
+
+        try{
+            String getFile = GetDataExpandableList.readFromFile();
+            JSONArray jar = new JSONArray(getFile);
+            Log.d("xxx", "Z PLIKU " + String.valueOf(jar));
+
+            for(int i = 0; i < jar.length(); i++){
+                JSONObject oneOb = jar.getJSONObject(i);
+                if(oneOb.getString("date").equals(date)){
+                    return null;
+                }
+            }
+
+
+            JSONObject oneDate = new JSONObject();
+            oneDate.put("date", date);
+
+            JSONArray ex_list = new JSONArray();
+
+            oneDate.put("exList", ex_list);
+
+            jar.put(oneDate);
+
+
+            // SAVE FILE
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File file = new File(dir.getPath(), "workoutData.json");
+            file.delete();
+            FileWriter writer;
+
+            try {
+                writer = new FileWriter(file);
+                writer.write(jar.toString(4));
+                writer.close();
+                return oneDate;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d("xxx", "getAllData: NIE UDALO SIE DODAC" + e);
+            }
+
+
+        }catch (JSONException e){
+            e.printStackTrace();
+            Log.d("xxx", "createDate: " + e);
+        }
+
+        return null;
+
+    }
+
+    public static void generateFile(){
+        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(dir.getPath(), "workoutData.json");
+        if(!file.exists()){
+
+            JSONArray ja = new JSONArray();
+
+            FileWriter writer;
+
+            try {
+                writer = new FileWriter(file);
+                writer.write(ja.toString(4));
+                writer.close();
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+                Log.d("xxx", "generateFILE: NIE UDALO SIE DODAC" + e);
+            }
+
+        }
+
+    }
 }
