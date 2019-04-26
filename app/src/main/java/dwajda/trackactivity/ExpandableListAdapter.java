@@ -1,7 +1,9 @@
 package dwajda.trackactivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,8 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
@@ -79,22 +83,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        Object name = null;
+    public ArrayList<String> getChild(int groupPosition, int childPosition) {
+        ArrayList <String> oneRepWeight = new ArrayList<>();
         try {
             JSONArray exNameArray = jsonObject.getJSONArray("exList");
             String exName= exNameArray.getString(groupPosition);
 
             JSONObject numbAndWeig = jsonObject.getJSONObject(exName);
-            JSONArray numRepeat = numbAndWeig.getJSONArray("weight");
+            JSONArray numRepeat = numbAndWeig.getJSONArray("repeats");
+            JSONArray weight = numbAndWeig.getJSONArray("weight");
 
-            name = numRepeat.get(childPosition);
+            oneRepWeight.add(numRepeat.getString(childPosition));
+            oneRepWeight.add(weight.getString(childPosition));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return name;
+        return oneRepWeight;
     }
 
     @Override
@@ -114,7 +120,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, final ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        final String headerTitle = (String) getGroup(groupPosition);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.group_list, null);
@@ -142,6 +148,54 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "Cos dodam" + groupPosition, Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                View addRepWeightView = View.inflate(context, R.layout.add_weight_repeat_alert, null);
+                builder.setView(addRepWeightView);
+
+                final EditText etRepeats = addRepWeightView.findViewById(R.id.etRepeats);
+                final EditText etWeight = addRepWeightView.findViewById(R.id.etWeight);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String sRepeats = etRepeats.getText().toString();
+                        String sWeight = etWeight.getText().toString();
+
+                        try {
+                            sRepeats = sRepeats.trim();
+                            sWeight = sWeight.trim();
+
+                            JSONObject exName = jsonObject.getJSONObject(headerTitle);
+                            JSONArray repeats = exName.getJSONArray("repeats");
+                            JSONArray weight = exName.getJSONArray("weight");
+
+                            repeats.put(sRepeats);
+                            weight.put(sWeight);
+
+                            GetDataExpandableList.SaveOneObjToFile(jsonObject);
+
+                            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(context, jsonObject);
+                            ExpandableListView expandableListView = (ExpandableListView) parent;
+                            expandableListView.setAdapter(expandableListAdapter);
+                            expandableListView.expandGroup(groupPosition);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("xxx", "onClick: NIE DODAJE");
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+                Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
             }
         });
 
@@ -150,13 +204,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        String childText = getChild(groupPosition, childPosition).toString();
+        ArrayList<String> repWeight = getChild(groupPosition, childPosition);
+
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.item_list, null);
 
         final TextView tvWeight = convertView.findViewById(R.id.tvWeight);
-        tvWeight.setText(childText);
+        tvWeight.setText(repWeight.get(1));
+
+        final TextView tvRepeats = convertView.findViewById(R.id.tvNumRepeat);
+        tvRepeats.setText(repWeight.get(0));
 
         TextView tvNumOfExercise = convertView.findViewById(R.id.tvNumOfExercise);
         tvNumOfExercise.setText(String.valueOf(childPosition + 1));

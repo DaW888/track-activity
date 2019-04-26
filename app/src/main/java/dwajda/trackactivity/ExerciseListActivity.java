@@ -87,6 +87,8 @@ public class ExerciseListActivity extends AppCompatActivity {
                                     exList.put(nameOfEx);
 
                                     JSONObject exercise = new JSONObject();
+                                    exercise.put("repeats", new JSONArray());
+                                    exercise.put("weight", new JSONArray());
                                     jsonObject.put(nameOfEx, exercise);
 
                                     GetDataExpandableList.SaveOneObjToFile(jsonObject);
