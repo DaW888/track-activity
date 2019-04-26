@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorBackground"
+    >
+
+    <TextView
+        android:textColor="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exercise Name"
+        android:textSize="20sp"
+        android:paddingStart="20sp"
+        />
+    <EditText
+        android:id="@+id/etExerciseName"
+        android:paddingStart="10sp"
+        android:text="20 powtorzen"
+        android:textColor="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:textSize="24sp"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout >

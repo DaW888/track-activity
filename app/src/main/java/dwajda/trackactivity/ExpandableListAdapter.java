@@ -11,6 +11,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -111,7 +113,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, final ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -121,6 +123,27 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         tvGroupItem.setText(headerTitle);
         tvGroupItem.setTypeface(null, Typeface.BOLD);
+
+        tvGroupItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ExpandableListView expandableListView = (ExpandableListView) parent;
+                if(!isExpanded){
+                    expandableListView.expandGroup(groupPosition);
+                } else{
+                    expandableListView.collapseGroup(groupPosition);
+                }
+
+            }
+        });
+
+        ImageButton ibAddWeight = convertView.findViewById(R.id.ibAddWeight);
+        ibAddWeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Cos dodam" + groupPosition, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return convertView;
     }
