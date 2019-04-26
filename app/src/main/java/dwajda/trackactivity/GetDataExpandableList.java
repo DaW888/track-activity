@@ -222,4 +222,35 @@ public class GetDataExpandableList {
         }
 
     }
+
+    public static void removeOneDate(Integer datePosition){
+        try{
+            String getFile = GetDataExpandableList.readFromFile();
+            JSONArray jar = new JSONArray(getFile);
+            Log.d("xxx", "Z PLIKU " + String.valueOf(jar));
+
+            jar.remove(datePosition);
+
+
+            // SAVE FILE
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File file = new File(dir.getPath(), "workoutData.json");
+            file.delete();
+            FileWriter writer;
+
+            try {
+                writer = new FileWriter(file);
+                writer.write(jar.toString(4));
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d("xxx", "getAllData: NIE UDALO SIE DODAC" + e);
+            }
+
+
+        }catch (JSONException e){
+            e.printStackTrace();
+            Log.d("xxx", "createDate: " + e);
+        }
+    }
 }

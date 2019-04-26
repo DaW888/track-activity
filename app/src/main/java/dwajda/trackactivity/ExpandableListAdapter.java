@@ -143,6 +143,57 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
+        tvGroupItem.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Delete " + headerTitle +" item?");
+                builder.setTitle("Delete");
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        try {
+
+                            jsonObject.remove(headerTitle);
+                            JSONArray exList = jsonObject.getJSONArray("exList");
+                            exList.remove(groupPosition);
+
+                            GetDataExpandableList.SaveOneObjToFile(jsonObject);
+
+                            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(context, jsonObject);
+                            ExpandableListView expandableListView = (ExpandableListView) parent;
+                            expandableListView.setAdapter(expandableListAdapter);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("xxx", "onClick: NIE USUWAM");
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+                Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorPrimaryDark);
+
+
+
+
+                return false;
+            }
+        });
+
+
+
+
+
         ImageButton ibAddWeight = convertView.findViewById(R.id.ibAddWeight);
         ibAddWeight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -281,6 +332,56 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
 
 
+            }
+        });
+
+        tvRepeats.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                int idItem = childPosition + 1;
+                builder.setMessage("Delete " + idItem +" item?");
+                builder.setTitle("Delete");
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        try {
+
+                            JSONObject exName = jsonObject.getJSONObject(headerTitle);
+                            JSONArray repeats = exName.getJSONArray("repeats");
+                            JSONArray weight = exName.getJSONArray("weight");
+
+                            repeats.remove(childPosition);
+                            weight.remove(childPosition);
+
+                            GetDataExpandableList.SaveOneObjToFile(jsonObject);
+
+                            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(context, jsonObject);
+                            ExpandableListView expandableListView = (ExpandableListView) parent;
+                            expandableListView.setAdapter(expandableListAdapter);
+                            expandableListView.expandGroup(groupPosition);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("xxx", "onClick: NIE USUWAM");
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+                Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorPrimaryDark);
+
+
+                return false;
             }
         });
 
