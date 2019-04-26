@@ -7,10 +7,11 @@
         android:id="@+id/tvDateListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:text="WITAJ"
         android:textColor="@color/colorAccent"
-        android:paddingTop="8sp"
-        android:paddingBottom="8sp"
+        android:paddingTop="6sp"
+        android:paddingBottom="6sp"
+        android:paddingStart="4sp"
         />
 </LinearLayout>

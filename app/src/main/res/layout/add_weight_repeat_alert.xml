@@ -11,15 +11,15 @@
         android:text="Repeats"
         android:textSize="20sp"
         android:textColor="@color/colorPrimary"
-        android:paddingStart="20sp"
+        android:paddingStart="18sp"
         />
     <EditText
+        android:text="10"
         android:id="@+id/etRepeats"
-        android:text="20 powtorzen"
         android:layout_width="match_parent"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/brightTextColor"
         android:paddingStart="10sp"
         />
 
@@ -28,16 +28,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Weight"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:paddingStart="20sp"
         />
     <EditText
+        android:text="50kg"
         android:id="@+id/etWeight"
         android:paddingStart="10sp"
-        android:text="20 powtorzen"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/brightTextColor"
         android:layout_width="match_parent"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:layout_height="wrap_content" />
 
 

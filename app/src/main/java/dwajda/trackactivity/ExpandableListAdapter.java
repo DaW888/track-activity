@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
@@ -198,7 +199,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ibAddWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Cos dodam" + groupPosition, Toast.LENGTH_SHORT).show();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 View addRepWeightView = View.inflate(context, R.layout.add_weight_repeat_alert, null);
@@ -247,6 +247,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 AlertDialog alert = builder.create();
                 alert.show();
                 Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
+
+                etWeight.requestFocus();
+                if(etWeight.requestFocus()){
+                    alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
             }
         });
 
@@ -329,8 +334,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 alert.show();
                 Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
 
-
-
+                etWeight.requestFocus();
+                if(etWeight.requestFocus()){
+                    alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
 
             }
         });

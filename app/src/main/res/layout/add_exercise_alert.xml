@@ -11,16 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Exercise Name"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:paddingStart="20sp"
         />
     <EditText
         android:id="@+id/etExerciseName"
         android:paddingStart="10sp"
-        android:text="20 powtorzen"
         android:textColor="@color/colorAccent"
         android:layout_width="match_parent"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:layout_height="wrap_content" />
 
 

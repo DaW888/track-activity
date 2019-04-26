@@ -13,7 +13,7 @@
         android:paddingBottom="4sp"
         android:text="1"
         android:textColor="@color/colorAccent"
-        android:textSize="26sp"
+        android:textSize="22sp"
 
         />
 
@@ -26,8 +26,8 @@
         android:paddingBottom="4sp"
         android:text="20"
         android:textAlignment="center"
-        android:textColor="@color/colorAccent"
-        android:textSize="26sp" />
+        android:textColor="@color/brightTextColor"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/tvWeight"
@@ -38,7 +38,7 @@
         android:paddingBottom="4sp"
         android:text="70kg"
         android:textAlignment="center"
-        android:textColor="@color/colorAccent"
-        android:textSize="26sp" />
+        android:textColor="@color/brightTextColor"
+        android:textSize="20sp" />
 
 </LinearLayout>

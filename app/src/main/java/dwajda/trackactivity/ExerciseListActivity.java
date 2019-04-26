@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
@@ -112,6 +113,12 @@ public class ExerciseListActivity extends AppCompatActivity {
                     AlertDialog alert = builder.create();
                     alert.show();
                     Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
+
+                    etExerciseName.requestFocus();
+                    if(etExerciseName.requestFocus()){
+                        alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    }
+
 
                 }
             });
