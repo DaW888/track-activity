@@ -203,8 +203,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, final ViewGroup parent) {
         ArrayList<String> repWeight = getChild(groupPosition, childPosition);
+        final String headerTitle = (String) getGroup(groupPosition);
 
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -219,60 +220,65 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView tvNumOfExercise = convertView.findViewById(R.id.tvNumOfExercise);
         tvNumOfExercise.setText(String.valueOf(childPosition + 1));
 
-        final EditText etWeight = convertView.findViewById(R.id.etWeight);
-        final ViewSwitcher switcher = convertView.findViewById(R.id.switcherWeight);
-        etWeight.setImeActionLabel("SET", KeyEvent.KEYCODE_ENTER);
-
-        final View finalConvertView = convertView;
         tvWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switcher.showNext();
-                etWeight.setText(tvWeight.getText());
+
+//                final InputMethodManager imm = (InputMethodManager) finalConvertView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.showSoftInput(etWeight, InputMethodManager.SHOW_IMPLICIT);
 
 
-                final InputMethodManager imm = (InputMethodManager) finalConvertView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(etWeight, InputMethodManager.SHOW_IMPLICIT);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                View addRepWeightView = View.inflate(context, R.layout.add_weight_repeat_alert, null);
+                builder.setView(addRepWeightView);
 
-                etWeight.requestFocus();
+                final EditText etRepeats = addRepWeightView.findViewById(R.id.etRepeats);
+                final EditText etWeight = addRepWeightView.findViewById(R.id.etWeight);
+                etRepeats.setText(tvRepeats.getText().toString());
+                etWeight.setText(tvWeight.getText().toString());
 
-                etWeight.setOnKeyListener(new View.OnKeyListener() {
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        Log.d("xxx", "onKey: "+ keyCode);
-                        if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
-                            Log.d("xxx", "onKey:etWeight " + etWeight.getText());
-                            tvWeight.setText(etWeight.getText());
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String sRepeats = etRepeats.getText().toString();
+                        String sWeight = etWeight.getText().toString();
+
+                        try {
+                            sRepeats = sRepeats.trim();
+                            sWeight = sWeight.trim();
+
+                            JSONObject exName = jsonObject.getJSONObject(headerTitle);
+                            JSONArray repeats = exName.getJSONArray("repeats");
+                            JSONArray weight = exName.getJSONArray("weight");
+
+                            repeats.put(childPosition, sRepeats);
+                            weight.put(childPosition, sWeight);
+
+                            GetDataExpandableList.SaveOneObjToFile(jsonObject);
+
+                            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(context, jsonObject);
+                            ExpandableListView expandableListView = (ExpandableListView) parent;
+                            expandableListView.setAdapter(expandableListAdapter);
+                            expandableListView.expandGroup(groupPosition);
 
 
-                            try {
-                                JSONArray exNameArray = jsonObject.getJSONArray("exList");
-                                String exName= exNameArray.getString(groupPosition);
-
-                                JSONObject numbAndWeig = jsonObject.getJSONObject(exName);
-                                JSONArray numWeight = numbAndWeig.getJSONArray("weight");
-                                numWeight.put(childPosition, etWeight.getText());
-                                Log.d("xxx", String.valueOf(jsonObject));
-                                GetDataExpandableList.SaveOneObjToFile(jsonObject);
-
-                                imm.hideSoftInputFromWindow(etWeight.getWindowToken(), 0);
-                                Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show();
-
-                                switcher.showPrevious();
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText(context, "something went WRONG", Toast.LENGTH_SHORT).show();
-                            }
-
-
-                            return true;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-
-                        return false;
                     }
                 });
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("xxx", "onClick: NIE DODAJE");
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+                Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
+
+
 
 
             }
