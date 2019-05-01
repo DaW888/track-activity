@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<!--Alert with adding Repeats and Weight to one Exercise-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Repeats"
-        android:textSize="20sp"
-        android:textColor="@color/colorPrimary"
         android:paddingStart="18sp"
-        />
+        android:text="Repeats"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
     <EditText
-        android:text="10"
         android:id="@+id/etRepeats"
         android:layout_width="match_parent"
-        android:textSize="22sp"
         android:layout_height="wrap_content"
-        android:textColor="@color/brightTextColor"
         android:paddingStart="10sp"
-        />
+        android:text="10"
+        android:textColor="@color/brightTextColor"
+        android:textSize="22sp" />
 
     <TextView
-        android:textColor="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Weight"
-        android:textSize="18sp"
         android:paddingStart="20sp"
-        />
+        android:text="Weight"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp" />
+
     <EditText
-        android:text="50kg"
         android:id="@+id/etWeight"
-        android:paddingStart="10sp"
-        android:textColor="@color/brightTextColor"
         android:layout_width="match_parent"
-        android:textSize="22sp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingStart="10sp"
+        android:text="50kg"
+        android:textColor="@color/brightTextColor"
+        android:textSize="22sp" />
 
 
-</LinearLayout >
+</LinearLayout>

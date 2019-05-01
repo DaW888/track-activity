@@ -1,30 +1,19 @@
 package dwajda.trackactivity;
 
-import android.content.Context;
 import android.os.Environment;
-import android.util.JsonReader;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.List;
 
 public class GetDataExpandableList {
     public static JSONArray getAllData() throws JSONException {
@@ -84,20 +73,19 @@ public class GetDataExpandableList {
 
         String getFile = readFromFile();
         JSONArray jar = new JSONArray(getFile);
-        Log.d("xxx", "Z PLIKU "+String.valueOf(jar));
+        Log.d("xxx", "Z PLIKU " + jar);
 
         return ja;
 
     }
 
-    public static String readFromFile() {
+    static String readFromFile() {
 
         String jsonStr = null;
 
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "workoutData.json");
 
         try (FileInputStream stream = new FileInputStream(file)) {
-
             FileChannel fc = stream.getChannel();
             MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 
@@ -106,23 +94,21 @@ public class GetDataExpandableList {
             e.printStackTrace();
         }
 
-
         return jsonStr;
     }
 
-    public static void SaveOneObjToFile(JSONObject jsonObject) {
-
+    static void SaveOneObjToFile(JSONObject jsonObject) {
         JSONArray jar;
         try {
             // READ FILE
             String jsonStrFromFile = readFromFile();
             jar = new JSONArray(jsonStrFromFile);
-            Log.d("xxx", "Z PLIKU " + String.valueOf(jar));
+            Log.d("xxx", "Z PLIKU " + jar);
 
-            for(int i=0; i < jar.length(); i++){
+            for (int i = 0; i < jar.length(); i++) {
                 JSONObject oneOb = jar.getJSONObject(i);
 
-                if(oneOb.getString("date").equals(jsonObject.getString("date"))){
+                if (oneOb.getString("date").equals(jsonObject.getString("date"))) {
                     jar.put(i, jsonObject);
                 }
             }
@@ -150,16 +136,16 @@ public class GetDataExpandableList {
 
     }
 
-    public static JSONObject createDate(String date){
+    static JSONObject createDate(String date) {
 
-        try{
+        try {
             String getFile = GetDataExpandableList.readFromFile();
             JSONArray jar = new JSONArray(getFile);
-            Log.d("xxx", "Z PLIKU " + String.valueOf(jar));
+            Log.d("xxx", "Z PLIKU " + jar);
 
-            for(int i = 0; i < jar.length(); i++){
+            for (int i = 0; i < jar.length(); i++) {
                 JSONObject oneOb = jar.getJSONObject(i);
-                if(oneOb.getString("date").equals(date)){
+                if (oneOb.getString("date").equals(date)) {
                     return null;
                 }
             }
@@ -192,7 +178,7 @@ public class GetDataExpandableList {
             }
 
 
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
             Log.d("xxx", "createDate: " + e);
         }
@@ -201,10 +187,10 @@ public class GetDataExpandableList {
 
     }
 
-    public static void generateFile(){
+    static void generateFile() {
         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(dir.getPath(), "workoutData.json");
-        if(!file.exists()){
+        if (!file.exists()) {
 
             JSONArray ja = new JSONArray();
 
@@ -223,11 +209,11 @@ public class GetDataExpandableList {
 
     }
 
-    public static void removeOneDate(Integer datePosition){
-        try{
+    static void removeOneDate(Integer datePosition) {
+        try {
             String getFile = GetDataExpandableList.readFromFile();
             JSONArray jar = new JSONArray(getFile);
-            Log.d("xxx", "Z PLIKU " + String.valueOf(jar));
+            Log.d("xxx", "Z PLIKU " + jar);
 
             jar.remove(datePosition);
 
@@ -248,7 +234,7 @@ public class GetDataExpandableList {
             }
 
 
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
             Log.d("xxx", "createDate: " + e);
         }

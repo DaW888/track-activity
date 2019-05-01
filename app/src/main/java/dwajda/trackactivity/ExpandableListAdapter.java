@@ -5,36 +5,28 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.Key;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private JSONObject jsonObject;
 
-    public ExpandableListAdapter(Context _context, JSONObject _jsonObject) {
+    ExpandableListAdapter(Context _context, JSONObject _jsonObject) {
         context = _context;
         jsonObject = _jsonObject;
     }
@@ -56,7 +48,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         int size = 0;
         try {
             JSONArray exNameArray = jsonObject.getJSONArray("exList");
-            String exName= exNameArray.getString(groupPosition);
+            String exName = exNameArray.getString(groupPosition);
             JSONObject numbAndWeig = jsonObject.getJSONObject(exName);
             JSONArray weight = numbAndWeig.getJSONArray("weight");
             size = weight.length();
@@ -85,10 +77,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public ArrayList<String> getChild(int groupPosition, int childPosition) {
-        ArrayList <String> oneRepWeight = new ArrayList<>();
+        ArrayList<String> oneRepWeight = new ArrayList<>();
         try {
             JSONArray exNameArray = jsonObject.getJSONArray("exList");
-            String exName= exNameArray.getString(groupPosition);
+            String exName = exNameArray.getString(groupPosition);
 
             JSONObject numbAndWeig = jsonObject.getJSONObject(exName);
             JSONArray numRepeat = numbAndWeig.getJSONArray("repeats");
@@ -135,9 +127,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 ExpandableListView expandableListView = (ExpandableListView) parent;
-                if(!isExpanded){
+                if (!isExpanded) {
                     expandableListView.expandGroup(groupPosition);
-                } else{
+                } else {
                     expandableListView.collapseGroup(groupPosition);
                 }
 
@@ -149,7 +141,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             public boolean onLongClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Delete " + headerTitle +" item?");
+                builder.setMessage("Delete " + headerTitle + " item?");
                 builder.setTitle("Delete");
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -185,14 +177,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorPrimaryDark);
 
 
-
-
                 return false;
             }
         });
-
-
-
 
 
         ImageButton ibAddWeight = convertView.findViewById(R.id.ibAddWeight);
@@ -249,7 +236,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
 
                 etWeight.requestFocus();
-                if(etWeight.requestFocus()){
+                if (etWeight.requestFocus()) {
                     alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 }
             }
@@ -335,7 +322,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
 
                 etWeight.requestFocus();
-                if(etWeight.requestFocus()){
+                if (etWeight.requestFocus()) {
                     alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 }
 
@@ -348,7 +335,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 int idItem = childPosition + 1;
-                builder.setMessage("Delete " + idItem +" item?");
+                builder.setMessage("Delete " + idItem + " item?");
                 builder.setTitle("Delete");
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

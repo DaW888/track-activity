@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<!--Item with Date in Main Activity-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvDateListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="28sp"
-        android:text="WITAJ"
-        android:textColor="@color/colorAccent"
+        android:paddingStart="4sp"
         android:paddingTop="6sp"
         android:paddingBottom="6sp"
-        android:paddingStart="4sp"
-        />
+        android:text="DATE"
+        android:textColor="@color/colorAccent"
+        android:textSize="28sp" />
 </LinearLayout>

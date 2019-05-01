@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<!--Parent/Group item-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvGroupItem"
         android:layout_width="0sp"
-        android:layout_weight="10"
         android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:paddingTop="5sp"
+        android:paddingEnd="0sp"
+        android:paddingBottom="5sp"
         android:text="Wyciskanie na ławce"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
-        android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:paddingEnd="0sp"
-        android:paddingTop="5sp"
-        android:paddingBottom="5sp"
-        />
+        android:textSize="24sp" />
+
     <ImageButton
         android:id="@+id/ibAddWeight"
-        android:background="#00FFFFFF"
         android:layout_width="35sp"
-        android:layout_weight="1"
         android:layout_height="40sp"
         android:layout_marginTop="5sp"
-        android:src="@drawable/ic_add_white_24dp"
-        />
+        android:layout_weight="1"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_add_white_24dp" />
 </LinearLayout>

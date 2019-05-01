@@ -1,15 +1,11 @@
 package dwajda.trackactivity;
 
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -40,10 +36,10 @@ public class ExerciseListActivity extends AppCompatActivity {
         JSONArray jsonArray;
         try {
             jsonArray = new JSONArray(getFile);
-            Log.d("xxx", "Z PLIKU "+String.valueOf(jsonArray));
+            Log.d("xxx", "Z PLIKU " + jsonArray);
             final JSONObject jsonObject = jsonArray.getJSONObject(numDate);
 
-            Log.d("xxx", "JEden json object"+ jsonObject);
+            Log.d("xxx", "JEden json object" + jsonObject);
             setTitle(jsonObject.getString("date"));
 
             expandableListView = findViewById(R.id.elvExerciseList);
@@ -54,6 +50,7 @@ public class ExerciseListActivity extends AppCompatActivity {
             fabAddExercise = findViewById(R.id.fabAddExercise);
             fabAddExercise.setOnClickListener(new View.OnClickListener() {
                 String nameOfEx = null;
+
                 @Override
                 public void onClick(View v) {
 
@@ -75,16 +72,16 @@ public class ExerciseListActivity extends AppCompatActivity {
 
                                 boolean canAdd = true;
 
-                                for(int i = 0; i < exList.length(); i++){
-                                    if(exList.getString(i).equals(nameOfEx) || nameOfEx.equals("")) {
+                                for (int i = 0; i < exList.length(); i++) {
+                                    if (exList.getString(i).equals(nameOfEx) || nameOfEx.equals("")) {
                                         canAdd = false;
                                         break;
                                     }
                                 }
 
-                                if(!canAdd){
+                                if (!canAdd) {
                                     Toast.makeText(ExerciseListActivity.this, "This name already exist", Toast.LENGTH_SHORT).show();
-                                } else{
+                                } else {
                                     exList.put(nameOfEx);
 
                                     JSONObject exercise = new JSONObject();
@@ -115,14 +112,13 @@ public class ExerciseListActivity extends AppCompatActivity {
                     Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
 
                     etExerciseName.requestFocus();
-                    if(etExerciseName.requestFocus()){
+                    if (etExerciseName.requestFocus()) {
                         alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                     }
 
 
                 }
             });
-
 
 
         } catch (JSONException e) {
