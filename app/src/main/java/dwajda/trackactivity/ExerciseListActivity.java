@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ExerciseListActivity extends AppCompatActivity {
@@ -57,14 +60,22 @@ public class ExerciseListActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ExerciseListActivity.this);
                     View addExerciseView = View.inflate(ExerciseListActivity.this, R.layout.add_exercise_alert, null);
 
-                    final EditText etExerciseName = addExerciseView.findViewById(R.id.etExerciseName);
+                    final AutoCompleteTextView actvExerciseName = addExerciseView.findViewById(R.id.actvExerciseName);
+                    ArrayList<String> listOfExercise = GetDataExpandableList.getAllExercisesList();
+//                    ArrayList<String> listOfExercise = new ArrayList<>();//GetDataExpandableList.getAllExercisesList();
+//                    listOfExercise.add("jeden");
+//                    listOfExercise.add("jeden");
+//                    listOfExercise.add("jeden");
+
+                    AddExerciseArrayAdapter addExerciseArrayAdapter = new AddExerciseArrayAdapter(ExerciseListActivity.this, R.layout.autocomplete_exercise_name_item, listOfExercise);
+                    actvExerciseName.setAdapter(addExerciseArrayAdapter);
 
                     builder.setView(addExerciseView);
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            nameOfEx = etExerciseName.getText().toString();
+                            nameOfEx = actvExerciseName.getText().toString();
 
                             try {
                                 nameOfEx = nameOfEx.trim();
@@ -111,8 +122,8 @@ public class ExerciseListActivity extends AppCompatActivity {
                     alert.show();
                     Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
 
-                    etExerciseName.requestFocus();
-                    if (etExerciseName.requestFocus()) {
+                    actvExerciseName.requestFocus();
+                    if (actvExerciseName.requestFocus()) {
                         alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                     }
 

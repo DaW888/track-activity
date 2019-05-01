@@ -15,8 +15,8 @@
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/etExerciseName"
+    <AutoCompleteTextView
+        android:id="@+id/actvExerciseName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="10sp"

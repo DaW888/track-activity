@@ -1,5 +1,6 @@
 package dwajda.trackactivity;
 
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -14,6 +15,11 @@ import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class GetDataExpandableList {
     public static JSONArray getAllData() throws JSONException {
@@ -238,5 +244,47 @@ public class GetDataExpandableList {
             e.printStackTrace();
             Log.d("xxx", "createDate: " + e);
         }
+    }
+
+    static ArrayList<String> getAllExercisesList() {
+        ArrayList<String> exerciseList = new ArrayList<>();
+        try {
+
+            String getFile = readFromFile();
+            JSONArray jar = new JSONArray(getFile);
+
+            for (int i = 0; i < jar.length(); i++) {
+                JSONObject jo = jar.getJSONObject(i);
+                JSONArray jaList = jo.getJSONArray("exList");
+
+                for (int j = 0; j < jaList.length(); j++) {
+                    exerciseList.add(jaList.getString(j).trim());
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d("xxx", "getAllExercisesList: " + e );
+        }
+
+        // FILTER DUPLICATES
+        exerciseList = new ArrayList<>(new LinkedHashSet<>(exerciseList));
+        Log.d("xxx", "getAllExercisesList: " + exerciseList);
+
+        // SORT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            exerciseList.sort(new Comparator<String>() {
+                @Override
+                public int compare(String s1, String s2) {
+                    return s1.compareTo(s2);
+                }
+            });
+        }
+        Log.d("xxx", "getAllExercisesList: " + exerciseList);
+
+
+        return exerciseList;
+
+
     }
 }
