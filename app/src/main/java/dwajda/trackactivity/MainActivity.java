@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     fabAddDate.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy EEE");
                             String currentDate = simpleDateFormat.format(new Date());
 
                             JSONObject oneDate = GetDataExpandableList.createDate(currentDate);

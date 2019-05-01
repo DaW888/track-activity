@@ -74,7 +74,7 @@ public class AddExerciseArrayAdapter extends ArrayAdapter {
                 ArrayList<String> matchValues = new ArrayList<>();
 
                 for(String item : listAll){
-                    if(item.toLowerCase().trim().startsWith(pattern)){
+                    if(item.toLowerCase().trim().contains(pattern)){
                         matchValues.add(item);
                     }
                 }
