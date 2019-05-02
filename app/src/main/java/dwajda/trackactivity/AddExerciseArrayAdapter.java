@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
@@ -35,6 +37,21 @@ public class AddExerciseArrayAdapter extends ArrayAdapter {
 
         TextView tvAutoCompleteExercise = convertView.findViewById(R.id.tvAutoCompleteExercise);
         tvAutoCompleteExercise.setText(getItem(position));
+
+//        final View finalConvertView = convertView;
+//        convertView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if(event.getAction() == MotionEvent.ACTION_DOWN){
+//                    InputMethodManager imm = (InputMethodManager) finalConvertView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 1);
+//                }
+//
+//                return false;
+//            }
+//        });
+
+
         return convertView;
     }
 

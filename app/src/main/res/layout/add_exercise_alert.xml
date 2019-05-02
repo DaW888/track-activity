@@ -16,6 +16,8 @@
         android:textSize="18sp" />
 
     <AutoCompleteTextView
+        android:dropDownHeight="170sp"
+        android:completionThreshold="0"
         android:id="@+id/actvExerciseName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
