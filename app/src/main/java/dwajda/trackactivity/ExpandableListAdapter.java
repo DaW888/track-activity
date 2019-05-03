@@ -140,42 +140,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public boolean onLongClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Delete " + headerTitle + " item?");
-                builder.setTitle("Delete");
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        try {
-
-                            jsonObject.remove(headerTitle);
-                            JSONArray exList = jsonObject.getJSONArray("exList");
-                            exList.remove(groupPosition);
-
-                            GetDataExpandableList.SaveOneObjToFile(jsonObject);
-
-                            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(context, jsonObject);
-                            ExpandableListView expandableListView = (ExpandableListView) parent;
-                            expandableListView.setAdapter(expandableListAdapter);
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("xxx", "onClick: NIE USUWAM");
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-                Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorPrimaryDark);
-
+                // Remove exercise element
+                Alerts.RemoveExpandableGroupItem(context, parent, groupPosition, headerTitle, jsonObject);
 
                 return false;
             }
@@ -187,58 +153,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                View addRepWeightView = View.inflate(context, R.layout.add_weight_repeat_alert, null);
-                builder.setView(addRepWeightView);
+                // Create Alert with adding Series
+                Alerts.addSeries(context, parent, groupPosition, headerTitle, jsonObject);
 
-                final EditText etRepeats = addRepWeightView.findViewById(R.id.etRepeats);
-                final EditText etWeight = addRepWeightView.findViewById(R.id.etWeight);
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        String sRepeats = etRepeats.getText().toString();
-                        String sWeight = etWeight.getText().toString();
-
-                        try {
-                            sRepeats = sRepeats.trim();
-                            sWeight = sWeight.trim();
-
-                            JSONObject exName = jsonObject.getJSONObject(headerTitle);
-                            JSONArray repeats = exName.getJSONArray("repeats");
-                            JSONArray weight = exName.getJSONArray("weight");
-
-                            repeats.put(sRepeats);
-                            weight.put(sWeight);
-
-                            GetDataExpandableList.SaveOneObjToFile(jsonObject);
-
-                            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(context, jsonObject);
-                            ExpandableListView expandableListView = (ExpandableListView) parent;
-                            expandableListView.setAdapter(expandableListAdapter);
-                            expandableListView.expandGroup(groupPosition);
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("xxx", "onClick: NIE DODAJE");
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-                Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
-
-                etWeight.requestFocus();
-                if (etWeight.requestFocus()) {
-                    alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                }
             }
         });
 
@@ -270,61 +187,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 //                final InputMethodManager imm = (InputMethodManager) finalConvertView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 //                imm.showSoftInput(etWeight, InputMethodManager.SHOW_IMPLICIT);
 
+                // Create edit Series alert
+                Alerts.editSeries(context, childPosition, parent, groupPosition, headerTitle, jsonObject, tvRepeats, tvWeight);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                View addRepWeightView = View.inflate(context, R.layout.add_weight_repeat_alert, null);
-                builder.setView(addRepWeightView);
-
-                final EditText etRepeats = addRepWeightView.findViewById(R.id.etRepeats);
-                final EditText etWeight = addRepWeightView.findViewById(R.id.etWeight);
-                etRepeats.setText(tvRepeats.getText().toString());
-                etWeight.setText(tvWeight.getText().toString());
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        String sRepeats = etRepeats.getText().toString();
-                        String sWeight = etWeight.getText().toString();
-
-                        try {
-                            sRepeats = sRepeats.trim();
-                            sWeight = sWeight.trim();
-
-                            JSONObject exName = jsonObject.getJSONObject(headerTitle);
-                            JSONArray repeats = exName.getJSONArray("repeats");
-                            JSONArray weight = exName.getJSONArray("weight");
-
-                            repeats.put(childPosition, sRepeats);
-                            weight.put(childPosition, sWeight);
-
-                            GetDataExpandableList.SaveOneObjToFile(jsonObject);
-
-                            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(context, jsonObject);
-                            ExpandableListView expandableListView = (ExpandableListView) parent;
-                            expandableListView.setAdapter(expandableListAdapter);
-                            expandableListView.expandGroup(groupPosition);
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("xxx", "onClick: NIE DODAJE");
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-                Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
-
-                etWeight.requestFocus();
-                if (etWeight.requestFocus()) {
-                    alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                }
 
             }
         });
@@ -333,47 +198,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public boolean onLongClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                int idItem = childPosition + 1;
-                builder.setMessage("Delete " + idItem + " item?");
-                builder.setTitle("Delete");
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        try {
-
-                            JSONObject exName = jsonObject.getJSONObject(headerTitle);
-                            JSONArray repeats = exName.getJSONArray("repeats");
-                            JSONArray weight = exName.getJSONArray("weight");
-
-                            repeats.remove(childPosition);
-                            weight.remove(childPosition);
-
-                            GetDataExpandableList.SaveOneObjToFile(jsonObject);
-
-                            ExpandableListAdapter expandableListAdapter = new ExpandableListAdapter(context, jsonObject);
-                            ExpandableListView expandableListView = (ExpandableListView) parent;
-                            expandableListView.setAdapter(expandableListAdapter);
-                            expandableListView.expandGroup(groupPosition);
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("xxx", "onClick: NIE USUWAM");
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-                Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorPrimaryDark);
-
+                // Remove one sub element from parent
+                Alerts.removeSeries(context, childPosition, parent, groupPosition, headerTitle, jsonObject);
 
                 return false;
             }
