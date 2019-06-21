@@ -16,13 +16,13 @@
         android:paddingBottom="5sp"
         android:text="Wyciskanie na ławce"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp" />
+        android:textSize="22sp" />
 
     <ImageButton
         android:id="@+id/ibAddWeight"
         android:layout_width="35sp"
-        android:layout_height="40sp"
-        android:layout_marginTop="5sp"
+        android:layout_height="35sp"
+        android:layout_marginTop="2sp"
         android:layout_weight="1"
         android:background="#00FFFFFF"
         android:src="@drawable/ic_add_white_24dp" />

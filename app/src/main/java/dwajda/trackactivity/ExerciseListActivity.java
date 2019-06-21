@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +41,9 @@ public class ExerciseListActivity extends AppCompatActivity {
             final JSONObject jsonObject = jsonArray.getJSONObject(numDate);
 
             Log.d("xxx", "JEden json object" + jsonObject);
-            setTitle(jsonObject.getString("date"));
+            TextView appBarTvDate = findViewById(R.id.appBarTvDate);
+            appBarTvDate.setText(jsonObject.getString("date"));
+//            setTitle(jsonObject.getString("date"));
 
             expandableListView = findViewById(R.id.elvExerciseList);
 
@@ -60,6 +65,16 @@ public class ExerciseListActivity extends AppCompatActivity {
 
                     // Create Alert with Exercise Name
                     Alerts.createExercise(ExerciseListActivity.this, addExerciseView, expandableListView, jsonObject);
+
+                }
+            });
+
+            ImageView appBarIvNote = findViewById(R.id.appBarIvNote);
+            appBarIvNote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(ExerciseListActivity.this, "dodaje notatke", Toast.LENGTH_SHORT).show();
+                    Alerts.addNote(ExerciseListActivity.this, jsonObject);
 
                 }
             });

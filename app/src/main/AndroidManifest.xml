@@ -17,6 +17,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ExerciseListActivity"
             android:windowSoftInputMode="adjustPan|adjustResize"
+            android:theme="@style/AppThemeWithoutActionBar"
             />
         <activity android:name=".MainActivity">
             <intent-filter>

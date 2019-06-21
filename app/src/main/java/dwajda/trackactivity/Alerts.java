@@ -285,4 +285,49 @@ public class Alerts {
         Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorPrimaryDark);
 
     }
+
+    public static void addNote(final Context context, final JSONObject jsonObject) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View noteAlert = View.inflate(context, R.layout.note_alert, null);
+        builder.setView(noteAlert);
+
+        final EditText etNote = noteAlert.findViewById(R.id.etNote);
+        try {
+            etNote.setText(jsonObject.getString("note"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String sNote = etNote.getText().toString();
+                try {
+                    sNote = sNote.trim();
+                    jsonObject.put("note", sNote);
+
+
+                    GetDataExpandableList.SaveOneObjToFile(jsonObject);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("xxx", "onClick: NIE DODAJE");
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+        Objects.requireNonNull(alert.getWindow()).setBackgroundDrawableResource(R.color.colorBackground);
+
+        etNote.requestFocus();
+        if (etNote.requestFocus()) {
+            alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
 }

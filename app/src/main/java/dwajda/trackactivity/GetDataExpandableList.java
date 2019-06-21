@@ -163,6 +163,7 @@ public class GetDataExpandableList {
             JSONArray ex_list = new JSONArray();
 
             oneDate.put("exList", ex_list);
+            oneDate.put("note", "");
 
             jar.put(oneDate);
 

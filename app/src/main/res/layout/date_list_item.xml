@@ -10,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="4sp"
-        android:paddingTop="6sp"
-        android:paddingBottom="6sp"
+        android:paddingTop="4sp"
+        android:paddingBottom="4sp"
         android:text="DATE"
         android:textColor="@color/colorAccent"
-        android:textSize="28sp" />
+        android:textSize="24sp" />
 </LinearLayout>
